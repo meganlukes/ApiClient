@@ -23,16 +23,62 @@ namespace ApiClient
         static async Task Main(string[] args)
         {
             var client = new HttpClient();
-            var responseAsStream = await client.GetStreamAsync("https://official-joke-api.appspot.com/random_joke");
 
 
-            var jokes = await JsonSerializer.DeserializeAsync<List<Joke>>(responseAsStream);
-            foreach (var item in jokes)
-            {
-                Console.WriteLine($"The ID of the joke is {item.Id} and it is a {item.Type} type joke. The setup: {item.Setup}, the punchline: {item.Punchline}.");
-            }
+
+
+
+
             //Menu
-            Console.WriteLine();
+            Console.WriteLine("Welcome to the Joke Dispenser.");
+            bool joking = true;
+            while (joking == true)
+            {
+                Console.WriteLine("Would you like some (R)andom jokes or (P)rogramming jokes?   ");
+                var jokeType = Console.ReadLine().ToUpper();
+                Console.WriteLine("Do you want to hear one joke, or ten?   ");
+                var jokeQuantity = Console.ReadLine().ToUpper();
+                //Tell 1 random joke
+                if (jokeType == "R" && jokeQuantity == "ONE")
+                {
+                    var responseAsStream = await client.GetStreamAsync("https://official-joke-api.appspot.com/random_joke");
+                    var jokes = await JsonSerializer.DeserializeAsync<Joke>(responseAsStream);
+                    Console.WriteLine();
+                    Console.WriteLine(jokes.Setup);
+                    Console.WriteLine(jokes.Punchline);
+                }
+                //Tell 10 random jokes
+                if (jokeType == "R" && jokeQuantity == "TEN")
+                {
+
+                }
+                //Tell 1 programming joke
+                if (jokeType == "P" && jokeQuantity == "ONE")
+                {
+                    var responseAsStream = await client.GetStreamAsync("https://official-joke-api.appspot.com/jokes/programming/random");
+                    var jokes = await JsonSerializer.DeserializeAsync<Joke>(responseAsStream);
+                    Console.WriteLine();
+                    Console.WriteLine(jokes.Setup);
+                    Console.WriteLine(jokes.Punchline);
+                }
+                //Tell 10 programming jokes
+                if (jokeType == "P" && jokeQuantity == "TEN")
+                {
+
+                }
+
+
+
+
+
+                Console.WriteLine();
+                Console.WriteLine("Do you want some more jokes? (Yes or No)   ");
+                var response = Console.ReadLine().ToUpper();
+                if (response == "N" || response == "NO")
+                {
+                    joking = false;
+                }
+            }
 
 
 
