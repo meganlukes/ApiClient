@@ -65,11 +65,14 @@ namespace ApiClient
                 if (jokeType == "P" && jokeQuantity == "ONE")
                 {
                     var responseAsStream = await client.GetStreamAsync("https://official-joke-api.appspot.com/jokes/programming/random");
-                    var joke = await JsonSerializer.DeserializeAsync<Joke>(responseAsStream);
+                    var jokes = await JsonSerializer.DeserializeAsync<List<Joke>>(responseAsStream);
                     Console.WriteLine();
-                    Console.WriteLine(joke.Setup);
-                    Console.WriteLine(joke.Punchline);
-                    Console.WriteLine();
+                    foreach (var joke in jokes)
+                    {
+                        Console.WriteLine(joke.Setup);
+                        Console.WriteLine(joke.Punchline);
+                        Console.WriteLine();
+                    }
                 }
                 //Tell 10 programming jokes
                 if (jokeType == "P" && jokeQuantity == "TEN")
